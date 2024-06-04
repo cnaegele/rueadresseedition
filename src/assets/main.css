@@ -1,0 +1,27 @@
+input.criteres {
+    background-color:grey;
+    border: 1px solid white;
+}
+span.cardTitre {
+    font-size: x-large;
+    font-weight: bold;
+}
+span.listeGroupes {
+    font-size: x-small;
+}
+.adressedesactivee {
+    color: rgb(230, 161, 161);
+}
+.mapcontainer {
+    width: 1200px;
+    height: 800px;
+    border: 3px white solid;
+}
+.alocal {
+    text-decoration: none;
+    cursor: default;
+}
+.messageErreur {
+    color: rgb(161, 119, 119);
+    font-weight: bold;
+}
