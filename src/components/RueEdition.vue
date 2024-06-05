@@ -285,6 +285,33 @@
                                 ></v-text-field>    
                             </v-col>
                         </v-row>
+                        <v-row v-if="bGeoRefRue == true">
+                            <v-col
+                                cols="12"
+                                md="8"
+                            >
+                                <v-radio-group
+                                    label="Géoréférencement de la rue : Retour clic sur carte"
+                                    v-model="clicGeorefRue"
+                                    inline
+                                    density="compact"
+                                >
+                                    <v-radio label="aucun" :value="'x'" ></v-radio>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <v-radio label="minOE" :value="'minOE'" ></v-radio>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <v-radio label="minOE et minSN" :value="'minOEminSN'" ></v-radio>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <v-radio label="minSN" :value="'minSN'" ></v-radio>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <v-radio label="maxOE" :value="'maxOE'" ></v-radio>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <v-radio label="maxOE et maxSN" :value="'maxOEmaxSN'" ></v-radio>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <v-radio label="maxSN" :value="'maxSN'" ></v-radio>
+                                </v-radio-group>
+                            </v-col>
+                        </v-row>
                         <v-row>
                             <v-col
                                 cols="12"
@@ -323,10 +350,12 @@
                                     :zoom="mapZoomRue"
                                     :center="[(lesData.dataThingRue.coordminoe+lesData.dataThingRue.coordmaxoe)/2.0, 
                                                 (lesData.dataThingRue.coordminsn+lesData.dataThingRue.coordmaxsn)/2.0]"
+                                    @map-click="handleMapClickEventRue"            
                                 />
                                 <map-lausanne v-else ref="ruemap"
                                     :zoom="mapZoomLausanne"
                                     :center="mapCenterLausanne"
+                                    @map-click="handleMapClickEventRue" 
                                 />
                             </div>
                         </v-col>
@@ -598,13 +627,13 @@
                                     <map-lausanne v-if="adresse.coordoe != null" ref="adrmap"
                                         :zoom="mapZoomAdresse"
                                         :center="[adresse.coordoe, adresse.coordsn]"
-                                        @map-click="handleMapClickEvent"
+                                        @map-click="handleMapClickEventAdresse"
                                     />
                                     <map-lausanne v-else ref="adrmap"
                                         :zoom="mapZoomRue"
                                         :center="[(lesData.dataThingRue.coordminoe+lesData.dataThingRue.coordmaxoe)/2.0, 
                                                   (lesData.dataThingRue.coordminsn+lesData.dataThingRue.coordmaxsn)/2.0]"
-                                         @map-click="handleMapClickEvent"
+                                         @map-click="handleMapClickEventAdresse"
                                     />
                                 </div>
                              </v-col>
@@ -641,6 +670,8 @@
     const mapZoomLausanne = ref(2)
     const mapCenterLausanne = ref([2538590,1154830])
     const itemsAccesDP = ['-', 'oui', 'non']
+    let bGeoRefRue = ref(false)
+    let clicGeorefRue = ref('x')
     let dialog = ref(false)
     let dialogText = ref('')
     let dialogTitle = ref('')
@@ -971,6 +1002,22 @@
     })
     watch(() => lesData.dataThingRue.nom, () => {
         genereNoms()
+    })
+    watch(() => lesData.panelexpand, () => {
+        //On test si données rue et carte rue ouvert
+        let nbrOuvert = 0
+        if (lesData.panelexpand.length > 1) {
+            for (let i=0; i<lesData.panelexpand.length; i++) {
+                if (lesData.panelexpand[i] == 0 || lesData.panelexpand[i] == 1) {
+                    nbrOuvert++    
+                }
+            }
+        }
+        if (nbrOuvert == 2) {
+            bGeoRefRue = ref(true)
+        } else {
+            bGeoRefRue = ref(false)    
+        }
     })
    
 
@@ -1350,11 +1397,38 @@
         //console.log(lesData.dataThingRueAdresses)
     }
 
-    const handleMapClickEvent = (e) => {
+    const handleMapClickEventAdresse = (e) => {
         if (lesData.idAdresseEdition !== '') {
             //console.log(`map-click event x: ${e.x}, y: ${e.y}`);
             lesData.dataThingRueAdresses[lesData.indexAdresseEdition].coordoe = ref(e.x)
             lesData.dataThingRueAdresses[lesData.indexAdresseEdition].coordsn = ref(e.y)
         }
     }
+
+    const handleMapClickEventRue = (e) => {
+        console.log(`map-click event x: ${e.x}, y: ${e.y}`)
+        switch (clicGeorefRue.value) {
+            case "minOE":
+                lesData.dataThingRue.coordminoe = ref(e.x)
+                break
+            case 'minOEminSN':
+                lesData.dataThingRue.coordminoe = ref(e.x)
+                lesData.dataThingRue.coordminsn = ref(e.y)
+                break
+            case 'minSN':
+                lesData.dataThingRue.coordminsn = ref(e.y)
+                break
+            case "maxOE":
+                lesData.dataThingRue.coordmaxoe = ref(e.x)
+                break
+            case 'maxOEmaxSN':
+                lesData.dataThingRue.coordmaxoe = ref(e.x)
+                lesData.dataThingRue.coordmaxsn = ref(e.y)
+                break
+            case 'maxSN':
+                lesData.dataThingRue.coordmaxsn = ref(e.y)
+                break
+        } 
+    }
+
 </script>
