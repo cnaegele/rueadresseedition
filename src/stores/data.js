@@ -22,6 +22,7 @@ export const data = defineStore({
     rueTypesListe: ref([]),
     rueCategoriesNomListe: ref([]),
     panelexpand: ref([2]),
+    clicGeorefRue: ref('x'),
     messagesErreur: {
       dataRue: ref(''),
       dataAdresse: ref(''),

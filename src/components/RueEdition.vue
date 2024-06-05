@@ -292,7 +292,7 @@
                             >
                                 <v-radio-group
                                     label="Géoréférencement de la rue : Retour clic sur carte"
-                                    v-model="clicGeorefRue"
+                                    v-model="lesData.clicGeorefRue"
                                     inline
                                     density="compact"
                                 >
@@ -671,7 +671,6 @@
     const mapCenterLausanne = ref([2538590,1154830])
     const itemsAccesDP = ['-', 'oui', 'non']
     let bGeoRefRue = ref(false)
-    let clicGeorefRue = ref('x')
     let dialog = ref(false)
     let dialogText = ref('')
     let dialogTitle = ref('')
@@ -1266,6 +1265,7 @@
     }
 
     function quitteEditionRue() {
+        lesData.clicGeorefRue = ref('x')
         lesData.messagesErreur.dataRue = ref('')
         if (lesData.idThingRueChoisie != '0') {
             getRueData(lesData)
@@ -1281,6 +1281,7 @@
             && bestridRules == true && besidRules == true && bcodeRueRules == true 
             && bcoordOEMinRules == true && bcoordOEMaxRules == true && bcoordSNMinRules == true && bcoordSNMaxRules == true) {
             //console.log(JSON.stringify(lesData.dataThingRue))
+            lesData.clicGeorefRue = ref('x')
             lesData.messagesErreur.dataRue = ref('')
             const dataRue = {
                 idthing: lesData.idThingRueChoisie,
@@ -1406,8 +1407,9 @@
     }
 
     const handleMapClickEventRue = (e) => {
-        console.log(`map-click event x: ${e.x}, y: ${e.y}`)
-        switch (clicGeorefRue.value) {
+        //console.log(`map-click event x: ${e.x}, y: ${e.y}`)
+        //console.log(lesData.clicGeorefRue)
+        switch (lesData.clicGeorefRue) {
             case "minOE":
                 lesData.dataThingRue.coordminoe = ref(e.x)
                 break
