@@ -537,7 +537,7 @@
                                 <span class="messageErreur">{{ lesData.messagesErreur.dataAdresse }}</span>
                             </v-col>
                             <v-col md="2">
-                                <a class="alocal" :href="adresse.urllocal">{{ adresse.libelle }}</a>
+                                {{ adresse.libelle }}
                             </v-col>
                             <v-col>
                                 <v-text-field
@@ -1021,7 +1021,6 @@
         }
     })
     watch(() => lesData.idAdresseEdition, (newValue) => {
-        console.log(newValue)
         if (newValue === 0) {
             nextTick(() => {
                 inpNouveauNumero.value.$el.querySelector('input').focus()
@@ -1113,6 +1112,7 @@
 
     function demandeEditionAdresse(adresse, index) {
         //console.log(adresse)
+        const idadresse = adresse.idadresse
         lesData.indexAdresseEdition = ref(index)
         lesData.idAdresseCarte = ref(adresse.idadresse)
         lesData.idAdresseEdition = ref(adresse.idadresse)
@@ -1121,6 +1121,9 @@
         for (let i=0; i<oEls.length; i++) {
             let oEl =  oEls[i]
             oEl.style.color = ""
+            if (oEl.getAttribute("goid") == idadresse) {
+                oEl.scrollIntoView({ behavior: 'smooth' })
+            }            
         }    
     }
 
@@ -1139,7 +1142,7 @@
 
     async function demandeSauveAdresse(adresse)         
     {
-        if (adresse.idadresse == 0 
+        if (adresse.idadresse === 0 
             || (   badrCodePostalRules == true && badrExtensionCPRules == true
                 && begidRules == true && bedidRules == true
                 && badrcoordOERules == true && badrcoordSNRules == true)) {
@@ -1162,7 +1165,7 @@
                 coordsn: '',
             }
 
-            if (adresse.idadresse == 0) {
+            if (adresse.idadresse === 0) {
                 //Crétion nouvelle adresse
                 //on teste que le nouveau numéro est saisi
                 if (nouveauNumero.value.trim() == '') {
@@ -1263,7 +1266,6 @@
                     }
                     if (adrNumero == cuNumero && adrNumeroExtension == cuNumeroExtension) {
                         demandeEditionAdresse(lesData.dataThingRueAdresses[i], i)
-                        window.location.href = `#${lesData.dataThingRueAdresses[i].idadresse}`
                         break    
                     }
                 }
