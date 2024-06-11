@@ -413,6 +413,7 @@
                                 v-model="nouveauNumero"
                                 label="numéro"
                                 density="compact"
+                                ref="inpNouveauNumero"
                                 :rules="nouveauNumeroRule"
                             ></v-text-field> 
                         </v-col>
@@ -646,7 +647,7 @@
  </template>
 
 <script setup>
-    import { ref, watch } from 'vue'
+    import { ref, watch, nextTick} from 'vue'
     import { data } from '@/stores/data.js'
     import MapLausanne from 'ol-map-lausanne'
     import 'ol-map-lausanne/dist/style.css'
@@ -687,6 +688,7 @@
     let bcoordOEMinRules, bcoordOEMaxRules, bcoordSNMinRules, bcoordSNMaxRules
     let badrCodePostalRules, badrExtensionCPRules, begidRules, bedidRules
     let badrcoordOERules, badrcoordSNRules
+    const inpNouveauNumero = ref(null)
     const typeRueRules = [
         value => {
             if (value) {
@@ -1018,7 +1020,14 @@
             bGeoRefRue = ref(false)    
         }
     })
-   
+    watch(() => lesData.idAdresseEdition, (newValue) => {
+        console.log(newValue)
+        if (newValue === 0) {
+            nextTick(() => {
+                inpNouveauNumero.value.$el.querySelector('input').focus()
+            })
+        }
+    })  
 
     function initData() {
         lesData.dataThingRue = ref({
