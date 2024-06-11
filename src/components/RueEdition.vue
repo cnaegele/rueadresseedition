@@ -1020,13 +1020,6 @@
             bGeoRefRue = ref(false)    
         }
     })
-    watch(() => lesData.idAdresseEdition, (newValue) => {
-        if (newValue === 0) {
-            nextTick(() => {
-                inpNouveauNumero.value.$el.querySelector('input').focus()
-            })
-        }
-    })  
 
     function initData() {
         lesData.dataThingRue = ref({
@@ -1138,6 +1131,10 @@
 
     function demandeCreationAdresse() {
         lesData.idAdresseEdition = 0
+        nextTick(() => {
+                inpNouveauNumero.value.$el.querySelector('input').focus()
+        })
+
     }
 
     async function demandeSauveAdresse(adresse)         
