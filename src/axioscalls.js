@@ -109,6 +109,7 @@ export async function sauveRue(lesData, dataRue) {
         lesData.messagesErreur.serverbackend = ref(traiteAxiosError(error))
     })      
     //console.log(response.data)
+    lesData.idThingRueChoisie = ref(response.data.idthing)
     if (response.data.message.indexOf('ERREUR') == 0) {
         lesData.messagesErreur.serverbackend = ref(response.data.message)   
     }
