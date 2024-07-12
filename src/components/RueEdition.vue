@@ -348,6 +348,8 @@
                                             && lesData.dataThingRue.coordmaxsn != null" 
                                     ref="ruemap"
                                     :zoom="mapZoomRue"
+                                    :base-layer="'fonds_geo_osm_bdcad_gris'"
+                                    :layers-visible="41"
                                     :center="[(lesData.dataThingRue.coordminoe+lesData.dataThingRue.coordmaxoe)/2.0, 
                                                 (lesData.dataThingRue.coordminsn+lesData.dataThingRue.coordmaxsn)/2.0]"
                                     @map-click="handleMapClickEventRue"            
@@ -355,6 +357,8 @@
                                 <map-lausanne v-else ref="ruemap"
                                     :zoom="mapZoomLausanne"
                                     :center="mapCenterLausanne"
+                                    :base-layer="'fonds_geo_osm_bdcad_gris'"
+                                    :layers-visible="41"
                                     @map-click="handleMapClickEventRue" 
                                 />
                             </div>
@@ -628,13 +632,17 @@
                                     <map-lausanne v-if="adresse.coordoe != null" ref="adrmap"
                                         :zoom="mapZoomAdresse"
                                         :center="[adresse.coordoe, adresse.coordsn]"
+                                        :base-layer="'fonds_geo_osm_bdcad_gris'"
+                                        :layers-visible="41"
                                         @map-click="handleMapClickEventAdresse"
                                     />
                                     <map-lausanne v-else ref="adrmap"
                                         :zoom="mapZoomRue"
                                         :center="[(lesData.dataThingRue.coordminoe+lesData.dataThingRue.coordmaxoe)/2.0, 
                                                   (lesData.dataThingRue.coordminsn+lesData.dataThingRue.coordmaxsn)/2.0]"
-                                         @map-click="handleMapClickEventAdresse"
+                                        :base-layer="'fonds_geo_osm_bdcad_gris'"
+                                        :layers-visible="41"
+                                        @map-click="handleMapClickEventAdresse"
                                     />
                                 </div>
                              </v-col>
