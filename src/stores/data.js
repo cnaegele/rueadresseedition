@@ -3,8 +3,9 @@ import { ref } from 'vue'
 export const data = defineStore({
   id: 'iddata',
   state: () => ({
-    version: ref('1.0.1'),
-    dateversion: ref('11.06.2024'),
+    version: ref('1.0.2'),
+    dateversion: ref('18.07.2024'),
+    themeChoisi: ref(localStorage.getItem('themeChoisi') || 'dark'),
     idEmployeUser: ref(0),
     nomEmployeUser: ref(''),
     prenomEmployeUser: ref(''),

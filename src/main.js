@@ -5,20 +5,15 @@
  */
 import './assets/main.css'
 
-// Plugins
-import { registerPlugins } from '@/plugins'
-
-// Components
-import App from './App.vue'
-
-// Composables
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import App from './App.vue'
+import vuetifyPlugin from './plugins/vuetify'
 
+const pinia = createPinia()
 const app = createApp(App)
 
-app.use(createPinia())
-
-registerPlugins(app)
+app.use(pinia)
+app.use(vuetifyPlugin)
 
 app.mount('#app')

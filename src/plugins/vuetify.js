@@ -1,19 +1,23 @@
-/**
- * plugins/vuetify.js
- *
- * Framework documentation: https://vuetifyjs.com`
- */
-
-// Styles
+// plugins/vuetify.js
 import '@mdi/font/css/materialdesignicons.css'
 import 'vuetify/styles'
-
-// Composables
 import { createVuetify } from 'vuetify'
+import * as components from 'vuetify/components'
+import * as directives from 'vuetify/directives'
+import { data } from '@/stores/data.js'
 
-// https://vuetifyjs.com/en/introduction/why-vuetify/#feature-guides
-export default createVuetify({
-  theme: {
-    defaultTheme: 'dark',
-  },
-})
+export default {
+
+  install: (app) => {
+    let lesData = data()
+    const vuetify = createVuetify({
+      components,
+      directives,
+      theme: {
+        defaultTheme: lesData.themeChoisi,
+      },
+    })
+
+    app.use(vuetify)
+  }
+}
