@@ -27,7 +27,7 @@
 }
 .titreAdresses {
     font-weight: bold;
-    background-color: rgb(52, 122, 212);
+    background-color: rgb(135, 161, 194);
 }
 </style>
 <template>
@@ -1104,7 +1104,7 @@
         for (let i=0; i<oEls.length; i++) {
             let oEl =  oEls[i]
             if (oEl.getAttribute("goid") == idadresse) {
-                oEl.style.color = "greenyellow"
+                oEl.style.color = "#496D1D"
             } else {
                 oEl.style.color = ""    
             }

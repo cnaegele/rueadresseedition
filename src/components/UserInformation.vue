@@ -8,7 +8,7 @@
     <v-col cols="auto">
     <v-select
         class="d-flex align-center"
-        :items="['foncé', 'clair']"
+        :items="['foncé', 'clair', 'goéland']"
         density="compact"
         height="20px"
         max-width="200px"
@@ -37,6 +37,8 @@
         themeAffiche = ref('foncé')    
     } else if (lesData.themeChoisi == 'light') {
         themeAffiche = ref('clair')   
+    } else if (lesData.themeChoisi == 'goelandTheme') {
+        themeAffiche = ref('goéland')   
     } else {
         themeAffiche = ref('foncé')   
     }
@@ -44,7 +46,6 @@
 
     function choixTheme(value) {
         if (value == 'foncé') {
-
             lesData.themeChoisi = 'dark'
             theme.global.name.value = 'dark'
             localStorage.setItem('themeChoisi', 'dark')
@@ -52,6 +53,10 @@
             lesData.themeChoisi = 'light'    
             theme.global.name.value = 'light'
             localStorage.setItem('themeChoisi', 'light')
+        } else if (value == 'goéland') {
+            lesData.themeChoisi = 'goelandTheme'    
+            theme.global.name.value = 'goelandTheme'
+            localStorage.setItem('themeChoisi', 'goelandTheme')
         } else {
             lesData.themeChoisi = 'dark'    
             theme.global.name.value = 'dark'
