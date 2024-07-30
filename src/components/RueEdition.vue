@@ -29,6 +29,12 @@
     font-weight: bold;
     background-color: rgb(135, 161, 194);
 }
+.adressedesactivee {
+    color: rgb(230, 161, 161);
+}
+.vrowadressevisu {
+    color: #496D1D;    
+}
 </style>
 <template>
     <v-dialog
@@ -454,9 +460,13 @@
                         <v-row 
                             no-gutters
                             v-if="lesData.idAdresseEdition != adresse.idadresse"
-                            class="vrowadressevisu border border-thin" 
-                            :class="{ adressedesactivee : !adresse.boolactif }" 
-                            :goid="adresse.idadresse" 
+                            class="border border-thin" 
+                            :class="{ 
+                                'adressedesactivee' : !adresse.boolactif,
+                                'vrowadressevisu' : selectedRows[index] 
+                            }"
+                            :goid="adresse.idadresse"
+                            @click="toggleSelection(index)" 
                         >
                             <v-col>
                                 <v-tooltip text="afficher la carte">
@@ -516,7 +526,7 @@
                             no-gutters
                             v-if="lesData.idAdresseEdition == adresse.idadresse"
                             class="vrowadresseedit border border-thin" 
-                            :class="{ adressedesactivee : !adresse.boolactif }" 
+                            :class="{ 'adressedesactivee' : !adresse.boolactif }" 
                             :goid="adresse.idadresse" 
                         >
                             <v-col>
@@ -655,7 +665,7 @@
  </template>
 
 <script setup>
-    import { ref, watch, nextTick} from 'vue'
+    import { ref, reactive, watch, nextTick} from 'vue'
     import { data } from '@/stores/data.js'
     import MapLausanne from 'ol-map-lausanne'
     import 'ol-map-lausanne/dist/style.css'
@@ -681,6 +691,8 @@
     const itemsAccesDP = ['-', 'oui', 'non']
     let bGeoRefRue = ref(false)
     let dialog = ref(false)
+    const selectedRows = reactive({})
+    const derniereRowsSelected = ref(-1)
     let dialogText = ref('')
     let dialogTitle = ref('')
     await getTypesRueListe(lesData)
@@ -1029,6 +1041,20 @@
         }
     })
 
+    const toggleSelection = (index) => {
+        if (index != derniereRowsSelected.value) {
+            if (index != derniereRowsSelected.value && index >= 0) {
+                selectedRows[derniereRowsSelected.value] = false 
+                derniereRowsSelected.value = index   
+            }
+            if (selectedRows[index]) {
+                delete selectedRows[index]
+            } else {
+                selectedRows[index] = true
+            }
+        }
+    }
+
     function initData() {
         lesData.dataThingRue = ref({
             "idthing" : '0',
@@ -1100,15 +1126,7 @@
         } else {
             lesData.idAdresseCarte = ref(idadresse.toString())
         }
-        const oEls = document.getElementsByClassName("vrowadressevisu")
-        for (let i=0; i<oEls.length; i++) {
-            let oEl =  oEls[i]
-            if (oEl.getAttribute("goid") == idadresse) {
-                oEl.style.color = "#496D1D"
-            } else {
-                oEl.style.color = ""    
-            }
-        }
+        isSelected.value = !isSelected.value
     }
 
     function demandeEditionAdresse(adresse, index) {
@@ -1118,14 +1136,6 @@
         lesData.idAdresseCarte = ref(adresse.idadresse)
         lesData.idAdresseEdition = ref(adresse.idadresse)
         lesData.dataAdresseEdition = ref(adresse)
-        const oEls = document.getElementsByClassName("vrowadressevisu")
-        for (let i=0; i<oEls.length; i++) {
-            let oEl =  oEls[i]
-            oEl.style.color = ""
-            if (oEl.getAttribute("goid") == idadresse) {
-                oEl.scrollIntoView({ behavior: 'smooth' })
-            }            
-        }    
     }
 
     function quitteEditionAdresse(adresse) {

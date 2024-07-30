@@ -6,12 +6,6 @@ span.cardTitre {
     font-size: x-large;
     font-weight: bold;
 }
-span.listeGroupes {
-    font-size: x-small;
-}
-.adressedesactivee {
-    color: rgb(230, 161, 161);
-}
 .mapcontainer {
     width: 1200px;
     height: 800px;
