@@ -159,6 +159,7 @@
                         </v-row>
                         <v-row>
                             <v-col
+                                class="d-flex align-center"
                                 cols="12"
                                 md="8"
                             >
@@ -168,7 +169,8 @@
                                     :rules="nomCourtRueRules"
                                     label="nom court"
                                     required
-                                ></v-text-field>    
+                                ></v-text-field>
+                                <span class="ml-2">({{ lesData.dataThingRue.nomcourt.length }} caractères)</span>    
                             </v-col>
                         </v-row>
                         <v-row>

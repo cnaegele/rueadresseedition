@@ -5,7 +5,7 @@ import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
 import { data } from '@/stores/data.js'
-import {getTheme} from '../../../cnlib/vgotheme.js' 
+import {getTheme} from '@/cnlibrary/vgotheme.js' 
 
 const goelandTheme = getTheme('goeland')
 
