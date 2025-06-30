@@ -91,6 +91,29 @@
                                 &nbsp;&nbsp;<span class="messageErreur">{{ lesData.messagesErreur.dataRue }}</span>
                             </v-col>
                         </v-row>
+                        <v-row v-if="lesData.modeLocal == 'horsls' && lesData.idThingRueChoisie == '0'">
+                            <v-col
+                                cols="12"
+                                md="4"
+                            >
+                                <v-select
+                                    id="selCommune"
+                                    v-model="lesData.dataThingRue.idville"
+                                    :rules="communeRules"
+                                    label="commune"
+                                    :items="lesData.communesListe"
+                                    required
+                                ></v-select>
+                            </v-col>
+                        </v-row>
+                        <v-row v-if="lesData.modeLocal == 'horsls' && lesData.idThingRueChoisie != '0'">
+                            <v-col
+                                cols="12"
+                                md="4"
+                            >
+                                Commune : {{ lesData.dataThingRue.ville }}
+                            </v-col>
+                        </v-row>
                         <v-row>
                             <v-col
                                 cols="12"
@@ -671,8 +694,10 @@
     import { data } from '@/stores/data.js'
     import MapLausanne from 'ol-map-lausanne'
     import 'ol-map-lausanne/dist/style.css'
+    import { getRuesListe } from '@/axioscalls.js'
     import { getTypesRueListe } from '@/axioscalls.js'
     import { getCategoriesNomRueListe } from '@/axioscalls.js'
+    import { getCommunesListe } from '@/axioscalls.js'
     import { getRueData } from '@/axioscalls.js'
     import { getRueAdressesListe } from '@/axioscalls.js'
     import { sauveAdresse } from '@/axioscalls.js'
@@ -701,7 +726,10 @@
     //console.log(lesData.rueTypesListe)
     await getCategoriesNomRueListe(lesData)
     //console.log(lesData.rueCategoriesNomListe)
+    await getCommunesListe(lesData)
+    console.log(lesData.communesListe)
 
+    let bCommuneRules = true
     let btypeRueRules
     let bnomRueRules, bnomCourtRueRules, bnomLongRueRules
     let banneeDecisionMuniRules
@@ -711,6 +739,16 @@
     let badrCodePostalRules, badrExtensionCPRules, begidRules, bedidRules
     let badrcoordOERules, badrcoordSNRules
     const inpNouveauNumero = ref(null)
+    const communeRules = [
+        value => {
+            if (value) {
+                bCommuneRules = true
+                return true
+            }
+            bCommuneRules = false
+            return `Le choix d'une commune est obligatoire`
+        }
+    ]
     const typeRueRules = [
         value => {
             if (value) {
@@ -1060,7 +1098,7 @@
     function initData() {
         lesData.dataThingRue = ref({
             "idthing" : '0',
-            "idville" : '632',
+            "idville" : '',
             "article" : '',
             "prenom" : '',
             "nom" : '',
@@ -1079,6 +1117,9 @@
             "coordmaxoe" : null,
             "coordmaxsn" : null,
         })
+        if (lesData.modeLocal == 'ls') {
+            lesData.dataThingRue.idville = '632'    
+        }
    }
 
     function focusSurInputGenereNom() {
@@ -1303,7 +1344,12 @@
     }
 
     async function demandeSauveRue() {
-        if ( btypeRueRules == true 
+        let bCreation = false
+        if (lesData.idThingRueChoisie === 0) {
+            bCreation = true    
+        } 
+        if ( bCommuneRules
+            && btypeRueRules == true 
             && bnomRueRules == true && bnomCourtRueRules == true && bnomLongRueRules == true
             && banneeDecisionMuniRules == true && bcategorieNomRules == true
             && bestridRules == true && besidRules == true && bcodeRueRules == true 
@@ -1412,6 +1458,14 @@
                 dialogText.value = lesData.messagesErreur.serverbackend
                 dialogTitle.value = "Sauvegarde impossible"
                 dialog.value = true
+            }
+            if (bCreation) {
+                await getRuesListe(lesData)
+                console.log(lesData.ruesListe)
+                lesData.ruesListe.unshift({
+                    "value": ref(0),    
+                    "title": ref("création d'une nouvelle rue")  
+                })
             }
             getRueData(lesData)
         } else {

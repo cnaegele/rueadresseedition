@@ -2,11 +2,33 @@
 <template>
     <v-card>
         <v-card-text>
-            <div>choix d'une rue</div>
+            <v-row no-gutters class="d-flex align-center">
+                <v-col cols="auto">
+                    <p class="text-subtitle-1 mb-2">Choix d'une rue.</p>
+                </v-col>
+                <v-col cols="auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</v-col>
+                <v-col cols="auto">
+                    <p class="text-body-1 mb-2">Localisation :&nbsp;</p>
+                </v-col>
+                <v-col cols="auto">
+                    <v-select
+                        v-model="lesData.modeLocal"
+                        :items="[
+                            { title: 'Lausanne', value: 'ls' },
+                            { title: 'Hors de Lausanne', value: 'horsls' }
+                        ]"
+                        item-title="title"
+                        item-value="value"
+                        density="compact"
+                        height="16px"
+                        max-width="200px"
+                    ></v-select>
+                </v-col>
+            </v-row>
             <v-autocomplete
                 v-model="lesData.idThingRueChoisie"
                 label=""
-                :items="items"
+                :items="lesData.ruesListe"
                 :custom-filter="customFilter"
             ></v-autocomplete>
         </v-card-text>
@@ -20,14 +42,13 @@
     import { getRueData } from '@/axioscalls.js'
     import { getRueAdressesListe } from '@/axioscalls.js'
     let lesData = data()
-    await getRuesListe(lesData)
-    lesData.ruesListe.unshift({
-        "value": ref(0),    
-        "title": ref("création d'une nouvelle rue")  
-    })
-    const items = lesData.ruesListe
-    //console.log(items)
+    //const items = ref([])
+    listeRue()
 
+    watch(() => lesData.modeLocal, () => {
+        lesData.idThingRueChoisie = ''
+        listeRue()
+    })
     watch(() => lesData.idThingRueChoisie, () => {
         choixRue()
     })
@@ -42,6 +63,16 @@
         const searchTextUnAccent = removeAccents(queryText.toLowerCase())
         return textLowerCase.indexOf(searchTextLowerCase) > -1
             || textUnAccent.indexOf(searchTextUnAccent) > -1
+    }
+
+    async function listeRue() {
+        await getRuesListe(lesData)
+        //console.log(lesData.ruesListe)
+        lesData.ruesListe.unshift({
+            "value": ref(0),    
+            "title": ref("création d'une nouvelle rue")  
+        })
+        //items.value = lesData.ruesListe
     }
 
     async function choixRue() {

@@ -3,8 +3,8 @@ import { ref } from 'vue'
 export const data = defineStore({
   id: 'iddata',
   state: () => ({
-    version: ref('1.0.4'),
-    dateversion: ref('15.08.2024'),
+    version: ref('1.0.5'),
+    dateversion: ref('30.06.2025'),
     themeChoisi: ref(localStorage.getItem('themeChoisi') || 'dark'),
     idEmployeUser: ref(0),
     nomEmployeUser: ref(''),
@@ -12,6 +12,7 @@ export const data = defineStore({
     loginEmployeUser: ref(''),
     groupeSecurite: ref(''),
     bInGroupe: ref(0),
+    modeLocal: ref('ls'),
     idThingRueChoisie: ref(''),
     idAdresseCarte: ref(''),
     idAdresseEdition: ref(''),
@@ -22,6 +23,7 @@ export const data = defineStore({
     ruesListe: ref([]),
     rueTypesListe: ref([]),
     rueCategoriesNomListe: ref([]),
+    communesListe: ref([]),
     panelexpand: ref([2]),
     clicGeorefRue: ref('x'),
     messagesErreur: {

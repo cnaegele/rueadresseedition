@@ -23,8 +23,9 @@ export async function getDataUserInfo(groupeSecurite, lesData) {
 }
 
 export async function getRuesListe(lesData) {
-    const urlrl = `${g_devurl}${g_pathurl}rues_noms_liste.php`
-    const response = await axios.get(urlrl)
+   const urlrl = `${g_devurl}${g_pathurl}rues_noms_liste.php`
+    const params = new URLSearchParams([['modelocal', lesData.modeLocal]])
+    const response = await axios.get(urlrl, { params })
         .catch(function (error) {
             return traiteAxiosError(error)
         })
@@ -38,6 +39,15 @@ export async function getTypesRueListe(lesData) {
             return traiteAxiosError(error)
         })
     lesData.rueTypesListe = ref(response.data)
+}
+
+export async function getCommunesListe(lesData) {
+    const urlrl = `${g_devurl}${g_pathurl}communes_liste.php`
+    const response = await axios.get(urlrl)
+        .catch(function (error) {
+            return traiteAxiosError(error)
+        })
+    lesData.communesListe = ref(response.data)
 }
 
 export async function getCategoriesNomRueListe(lesData) {
@@ -57,6 +67,7 @@ export async function getRueData(lesData) {
             return traiteAxiosError(error)
         })
     const aResponse = response.data
+    console.log(aResponse)
     if (aResponse.length == 1) {
         lesData.dataThingRue = ref(aResponse[0])
     }
