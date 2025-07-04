@@ -1108,7 +1108,7 @@
             "idtyperue" : '',
             "nomlong" : '',
             "nomcourt" : '',
-            "bpublic" : '',
+            "bpublic" : 1,
             "datedecisionmuni" : '',
             "idcategorienom" : '',
             "commentaire" : '',
@@ -1362,7 +1362,7 @@
                 idville: '',
                 idtyperue: '',
                 idcategorienom: '',
-                bpublic: '',
+                bpublic: 1,
                 datedecisionmuni: '',
                 article: '',
                 prenom: '',
@@ -1389,7 +1389,7 @@
             if (rue.bpublic !== null) {
                 dataRue.bpublic = rue.bpublic
             } else {
-                dataRue.bpublic = ''    
+                dataRue.bpublic = 1   
             }
             if (rue.datedecisionmuni !== null) {
                 dataRue.datedecisionmuni = rue.datedecisionmuni
