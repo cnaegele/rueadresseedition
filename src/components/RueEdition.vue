@@ -664,9 +664,10 @@
                             >
                                 <!-- géoréférencement... {{ adresse.coordoe }} , {{ adresse.coordsn }} -->
                                 <div class="mapcontaineradr">
-                                    <map-lausanne v-if="adresse.coordoe != null" ref="adrmap"
+                                    <map-lausanne v-if="adresse.coordoe != null && adresse.coordoe > coordeo_ctrlmin && adresse.coordoe < coordeo_ctrlmax && adresse.coordsn != null && adresse.coordsn > coordsn_ctrlmin && adresse.coordsn < coordsn_ctrlmax" 
+                                        ref="adrmap"
                                         :zoom="mapZoomAdresse"
-                                        :center="[adresse.coordoe, adresse.coordsn]"
+                                        :center="[+lesData.dataThingRueAdresses[index].coordoe, +lesData.dataThingRueAdresses[index].coordsn]"
                                         :base-layer="'fonds_geo_osm_bdcad_gris'"
                                         :layers-visible="41"
                                         @map-click="handleMapClickEventAdresse"
@@ -702,6 +703,10 @@
     import { getRueAdressesListe } from '@/axioscalls.js'
     import { sauveAdresse } from '@/axioscalls.js'
     import { sauveRue } from '@/axioscalls.js'
+    const coordeo_ctrlmin = ref(2533500.0)
+    const coordeo_ctrlmax = ref(2545400.0)
+    const coordsn_ctrlmin = ref(1150300.0)
+    const coordsn_ctrlmax = ref(1162100.0)
     let initialData = true
     let lesData = data()
     let idTypeRue = lesData.dataThingRue.idtyperue
@@ -727,7 +732,7 @@
     await getCategoriesNomRueListe(lesData)
     //console.log(lesData.rueCategoriesNomListe)
     await getCommunesListe(lesData)
-    console.log(lesData.communesListe)
+    //console.log(lesData.communesListe)
 
     let bCommuneRules = true
     let btypeRueRules
@@ -891,7 +896,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 2533500 && value < 2545400) {
+                if (value > coordeo_ctrlmin.value && value < coordeo_ctrlmax.value) {
                     bcoordOEMinRules = true
                     return true
                 }
@@ -907,7 +912,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 2533500 && value < 2545400) {
+                if (value > 2533500 && value < coordeo_ctrlmax.value) {
                     bcoordOEMaxRules = true
                     return true
                 }
@@ -923,7 +928,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 1150300 && value < 1162100) {
+                if (value > coordsn_ctrlmin.value && value < coordsn_ctrlmax.value) {
                     bcoordSNMinRules = true
                     return true
                 }
@@ -939,7 +944,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 1150300 && value < 1162100) {
+                if (value > coordsn_ctrlmin.value && value < coordsn_ctrlmax.value) {
                     bcoordSNMaxRules = true
                     return true
                 }
@@ -1017,7 +1022,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 2533500 && value < 2545400) {
+                if (value > coordeo_ctrlmin.value && value < coordeo_ctrlmax.value) {
                     badrcoordOERules = true
                     return true
                 }
@@ -1033,7 +1038,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 1150300 && value < 1162100) {
+                if (value > coordsn_ctrlmin.value && value < coordsn_ctrlmax.value) {
                     badrcoordSNRules = true
                     return true
                 }
