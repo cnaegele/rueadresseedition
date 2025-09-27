@@ -703,10 +703,10 @@
     import { getRueAdressesListe } from '@/axioscalls.js'
     import { sauveAdresse } from '@/axioscalls.js'
     import { sauveRue } from '@/axioscalls.js'
-    const coordeo_ctrlmin = ref(2533500.0)
-    const coordeo_ctrlmax = ref(2545400.0)
-    const coordsn_ctrlmin = ref(1150300.0)
-    const coordsn_ctrlmax = ref(1162100.0)
+    const coordeo_ctrlmin = ref(2480000.0)
+    const coordeo_ctrlmax = ref(2590000.0)
+    const coordsn_ctrlmin = ref(1100000.0)
+    const coordsn_ctrlmax = ref(1220000.0)
     let initialData = true
     let lesData = data()
     let idTypeRue = lesData.dataThingRue.idtyperue
@@ -912,7 +912,7 @@
                 return true
             }
             if (!isNaN(value)) {
-                if (value > 2533500 && value < coordeo_ctrlmax.value) {
+                if (value > coordeo_ctrlmin.value && value < coordeo_ctrlmax.value) {
                     bcoordOEMaxRules = true
                     return true
                 }
@@ -1455,8 +1455,8 @@
                 dataRue.coordmaxsn = ''    
             }
  
-            //console.log("dataRue")
-            //console.log(dataRue)
+            console.log("dataRue")
+            console.log(dataRue)
             lesData.messagesErreur.serverbackend = ref('')
             await sauveRue(lesData, dataRue)
             if (lesData.messagesErreur.serverbackend !== '') {
