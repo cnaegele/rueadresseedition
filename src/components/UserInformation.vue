@@ -1,7 +1,7 @@
 <template>
 <v-row no-gutters class="d-flex align-center">
     <v-col cols="auto">
-    Utilisateur : {{ lesData.prenomEmployeUser }} {{ lesData.nomEmployeUser }} / {{ lesData.loginEmployeUser }}
+    Utilisateur : {{ lesData.prenomEmployeUser }} {{ lesData.nomEmployeUser }} / {{ lesData.loginEmployeUser }} / v1.0.7 
     </v-col>
     <v-col cols="auto">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</v-col>
     <v-col cols="auto">thème :&nbsp;</v-col>
